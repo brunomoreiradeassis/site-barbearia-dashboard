@@ -75,6 +75,7 @@ const APPOINTMENTS = [
   },
 ];
 
+// Update the AppointmentStatus type to include "canceled"
 type AppointmentStatus = "confirmed" | "pending" | "canceled";
 
 const getStatusStyles = (status: AppointmentStatus) => {
