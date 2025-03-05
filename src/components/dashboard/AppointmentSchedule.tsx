@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Calendar as CalendarIcon, Clock, User, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,6 +5,9 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+
+// Define the AppointmentStatus type first
+type AppointmentStatus = "confirmed" | "pending" | "canceled";
 
 // Mock appointments data
 const TODAY = new Date();
@@ -20,7 +22,7 @@ const APPOINTMENTS = [
     date: TODAY,
     time: "09:30",
     duration: 60,
-    status: "confirmed" as const,
+    status: "confirmed" as AppointmentStatus,
     avatar: "https://ui-avatars.com/api/?name=Carlos+Silva&background=random",
   },
   {
@@ -30,7 +32,7 @@ const APPOINTMENTS = [
     date: TODAY,
     time: "11:00",
     duration: 30,
-    status: "confirmed" as const,
+    status: "confirmed" as AppointmentStatus,
     avatar: "https://ui-avatars.com/api/?name=André+Martins&background=random",
   },
   {
@@ -40,7 +42,7 @@ const APPOINTMENTS = [
     date: TODAY,
     time: "14:15",
     duration: 30,
-    status: "pending" as const,
+    status: "pending" as AppointmentStatus,
     avatar: "https://ui-avatars.com/api/?name=Rodrigo+Lima&background=random",
   },
   {
@@ -50,7 +52,7 @@ const APPOINTMENTS = [
     date: TODAY,
     time: "16:00",
     duration: 45,
-    status: "confirmed" as const,
+    status: "canceled" as AppointmentStatus,
     avatar: "https://ui-avatars.com/api/?name=Felipe+Costa&background=random",
   },
   {
@@ -60,7 +62,7 @@ const APPOINTMENTS = [
     date: TOMORROW,
     time: "10:00",
     duration: 60,
-    status: "confirmed" as const,
+    status: "confirmed" as AppointmentStatus,
     avatar: "https://ui-avatars.com/api/?name=Lucas+Mendes&background=random",
   },
   {
@@ -70,13 +72,10 @@ const APPOINTMENTS = [
     date: TOMORROW,
     time: "13:30",
     duration: 45,
-    status: "pending" as const,
+    status: "pending" as AppointmentStatus,
     avatar: "https://ui-avatars.com/api/?name=Vinícius+Alves&background=random",
   },
 ];
-
-// Update the AppointmentStatus type to include "canceled"
-type AppointmentStatus = "confirmed" | "pending" | "canceled";
 
 const getStatusStyles = (status: AppointmentStatus) => {
   switch (status) {
