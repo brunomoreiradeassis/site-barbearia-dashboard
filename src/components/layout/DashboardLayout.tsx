@@ -33,7 +33,7 @@ export function DashboardLayout() {
     <ThemeProvider>
       <TooltipProvider>
         <div className="app-container">
-          <Header onMenuToggle={toggleSidebar} isSidebarOpen={isSidebarOpen} />
+          <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
           <Sidebar isOpen={isSidebarOpen} />
           <main className={cn(
             "main-content",

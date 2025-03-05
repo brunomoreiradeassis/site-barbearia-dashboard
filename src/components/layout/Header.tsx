@@ -5,9 +5,11 @@ import { BellIcon, Menu } from "lucide-react";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 export function Header({ 
-  toggleSidebar 
+  toggleSidebar,
+  isSidebarOpen 
 }: { 
-  toggleSidebar: () => void 
+  toggleSidebar: () => void;
+  isSidebarOpen?: boolean;
 }) {
   return (
     <header className="fixed top-0 left-0 right-0 h-16 border-b z-40 bg-background/80 backdrop-blur-sm">
