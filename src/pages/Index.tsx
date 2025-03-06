@@ -1,4 +1,3 @@
-
 import React from "react";
 import { 
   CalendarCheck, 
@@ -19,10 +18,10 @@ import { TeamMembers } from "@/components/dashboard/TeamMembers";
 const Index = () => {
   return (
     <div className="space-y-6 animate-fade-in">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight mb-2">Dashboard</h1>
-        <p className="text-muted-foreground">
-          Bem-vindo ao seu painel de controle, aqui está o resumo do seu negócio.
+      <div className="pb-2 border-b">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground mb-1">Painel de Controle</h1>
+        <p className="text-sm text-muted-foreground font-medium">
+          Bem-vindo ao seu sistema de gestão. Acompanhe métricas, agendamentos e desempenho do seu negócio.
         </p>
       </div>
       
