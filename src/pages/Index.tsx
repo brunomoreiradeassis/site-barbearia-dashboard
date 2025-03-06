@@ -18,9 +18,9 @@ import { TeamMembers } from "@/components/dashboard/TeamMembers";
 const Index = () => {
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="pb-2 border-b">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground mb-1">Painel de Controle</h1>
-        <p className="text-sm text-muted-foreground font-medium">
+      <div className="pb-4 border-b pl-4">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground mb-2 pl-2">Painel de Controle</h1>
+        <p className="text-sm text-muted-foreground font-medium pl-2">
           Bem-vindo ao seu sistema de gestão. Acompanhe métricas, agendamentos e desempenho do seu negócio.
         </p>
       </div>
