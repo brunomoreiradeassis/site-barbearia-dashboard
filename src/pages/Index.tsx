@@ -19,19 +19,25 @@ import { TeamMembers } from "@/components/dashboard/TeamMembers";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { LoyaltyTracker } from "@/components/dashboard/LoyaltyTracker";
 import { NotificationSettings } from "@/components/dashboard/NotificationSettings";
+import { DashboardFilters } from "@/components/dashboard/DashboardFilters";
 
 const Index = () => {
   return (
     <div className="space-y-6 animate-fade-in">
-      <div className="pb-4 border-b pl-4 flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground mb-2 pl-2">Painel de Controle</h1>
-          <p className="text-sm text-muted-foreground font-medium pl-2">
-            Bem-vindo ao seu sistema de gestão. Acompanhe métricas, agendamentos e desempenho do seu negócio.
-          </p>
-        </div>
-        <div className="pr-4">
-          <ThemeToggle />
+      <div className="pb-4 border-b">
+        <div className="flex justify-between items-center p-2">
+          <div className="space-y-2">
+            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent drop-shadow-sm">
+              Painel de Controle
+            </h1>
+            <p className="text-sm text-muted-foreground font-medium max-w-2xl">
+              Bem-vindo ao seu sistema de gestão. Acompanhe métricas, agendamentos e desempenho do seu negócio.
+            </p>
+          </div>
+          <div className="flex items-center space-x-2 pr-4">
+            <DashboardFilters />
+            <ThemeToggle />
+          </div>
         </div>
       </div>
       
