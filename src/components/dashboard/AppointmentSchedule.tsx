@@ -1,10 +1,37 @@
+
 import React, { useState } from "react";
-import { Calendar as CalendarIcon, Clock, User, AlertCircle } from "lucide-react";
+import { Calendar as CalendarIcon, Clock, User, AlertCircle, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 // Define the AppointmentStatus type first
 type AppointmentStatus = "confirmed" | "pending" | "canceled";
@@ -92,6 +119,8 @@ const getStatusStyles = (status: AppointmentStatus) => {
 
 export function AppointmentSchedule() {
   const [selected, setSelected] = useState<"today" | "tomorrow">("today");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [appointmentDate, setAppointmentDate] = useState<Date | undefined>(new Date());
   
   const formatDate = (date: Date) => {
     return date.toLocaleDateString("pt-BR", {
@@ -108,33 +137,184 @@ export function AppointmentSchedule() {
       (selected === "tomorrow" && appointment.date === TOMORROW)
   );
 
+  const handleAddAppointment = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Here we would normally add the appointment to the database
+    // For this demo, we'll just close the dialog
+    setIsDialogOpen(false);
+    // Show success feedback in a real app
+  };
+
   return (
     <Card className="overflow-hidden">
       <div className="flex justify-between items-center border-b p-4">
         <h3 className="font-semibold">Agenda de Atendimentos</h3>
-        <div className="flex space-x-1">
-          <Button
-            variant={selected === "today" ? "default" : "ghost"}
-            size="sm"
-            onClick={() => setSelected("today")}
-            className={cn(
-              "text-xs h-8",
-              selected === "today" && "animate-scale-in"
-            )}
-          >
-            Hoje
-          </Button>
-          <Button
-            variant={selected === "tomorrow" ? "default" : "ghost"}
-            size="sm"
-            onClick={() => setSelected("tomorrow")}
-            className={cn(
-              "text-xs h-8",
-              selected === "tomorrow" && "animate-scale-in"
-            )}
-          >
-            Amanhã
-          </Button>
+        <div className="flex gap-2">
+          <div className="flex space-x-1">
+            <Button
+              variant={selected === "today" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setSelected("today")}
+              className={cn(
+                "text-xs h-8",
+                selected === "today" && "animate-scale-in"
+              )}
+            >
+              Hoje
+            </Button>
+            <Button
+              variant={selected === "tomorrow" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setSelected("tomorrow")}
+              className={cn(
+                "text-xs h-8",
+                selected === "tomorrow" && "animate-scale-in"
+              )}
+            >
+              Amanhã
+            </Button>
+          </div>
+          
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button size="sm">
+                <Plus className="h-4 w-4 mr-1" />
+                Agendar
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Novo Agendamento</DialogTitle>
+                <DialogDescription>
+                  Preencha os detalhes para criar um novo agendamento.
+                </DialogDescription>
+              </DialogHeader>
+              <form onSubmit={handleAddAppointment}>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="client" className="text-right">
+                      Cliente
+                    </Label>
+                    <div className="col-span-3">
+                      <Select>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione um cliente" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="henrique">Henrique Alves</SelectItem>
+                          <SelectItem value="marcelo">Marcelo Santos</SelectItem>
+                          <SelectItem value="bruno">Bruno Costa</SelectItem>
+                          <SelectItem value="carlos">Carlos Eduardo</SelectItem>
+                          <SelectItem value="rafael">Rafael Oliveira</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="service" className="text-right">
+                      Serviço
+                    </Label>
+                    <div className="col-span-3">
+                      <Select>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione um serviço" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="corte">Corte Degradê</SelectItem>
+                          <SelectItem value="barba">Barba Completa</SelectItem>
+                          <SelectItem value="combo">Corte + Barba</SelectItem>
+                          <SelectItem value="platinado">Platinado</SelectItem>
+                          <SelectItem value="hotTowel">Hot Towel</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="date" className="text-right">
+                      Data
+                    </Label>
+                    <div className="col-span-3">
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full justify-start text-left font-normal",
+                              !appointmentDate && "text-muted-foreground"
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {appointmentDate ? (
+                              format(appointmentDate, "PPP", {
+                                locale: ptBR,
+                              })
+                            ) : (
+                              <span>Selecione uma data</span>
+                            )}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0">
+                          <Calendar
+                            mode="single"
+                            selected={appointmentDate}
+                            onSelect={setAppointmentDate}
+                            initialFocus
+                            className="pointer-events-auto"
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="time" className="text-right">
+                      Horário
+                    </Label>
+                    <div className="col-span-3">
+                      <Select>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione um horário" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="9:00">09:00</SelectItem>
+                          <SelectItem value="9:30">09:30</SelectItem>
+                          <SelectItem value="10:00">10:00</SelectItem>
+                          <SelectItem value="10:30">10:30</SelectItem>
+                          <SelectItem value="11:00">11:00</SelectItem>
+                          <SelectItem value="11:30">11:30</SelectItem>
+                          <SelectItem value="14:00">14:00</SelectItem>
+                          <SelectItem value="14:30">14:30</SelectItem>
+                          <SelectItem value="15:00">15:00</SelectItem>
+                          <SelectItem value="15:30">15:30</SelectItem>
+                          <SelectItem value="16:00">16:00</SelectItem>
+                          <SelectItem value="16:30">16:30</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="professional" className="text-right">
+                      Profissional
+                    </Label>
+                    <div className="col-span-3">
+                      <Select>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecione um profissional" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="andre">André Silva</SelectItem>
+                          <SelectItem value="marcos">Marcos Souza</SelectItem>
+                          <SelectItem value="rodrigo">Rodrigo Almeida</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type="submit">Agendar</Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
       

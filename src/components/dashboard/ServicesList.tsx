@@ -1,12 +1,13 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { 
   Scissors, 
   MoreVertical, 
   Clock, 
   CircleDollarSign,
   Pencil, 
-  Trash2
+  Trash2,
+  Plus
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
@@ -71,11 +85,106 @@ const SERVICES = [
 ];
 
 export function ServicesList() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleAddService = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Here we would normally add the service to the database
+    // For this demo, we'll just close the dialog
+    setIsDialogOpen(false);
+    // Show success feedback in a real app
+  };
+
   return (
     <Card className="overflow-hidden">
       <div className="flex justify-between items-center border-b p-4">
         <h3 className="font-semibold">Serviços Oferecidos</h3>
-        <Button size="sm">Adicionar</Button>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button size="sm">
+              <Plus className="h-4 w-4 mr-1" />
+              Adicionar
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Novo Serviço</DialogTitle>
+              <DialogDescription>
+                Adicione um novo serviço ao seu catálogo.
+              </DialogDescription>
+            </DialogHeader>
+            <form onSubmit={handleAddService}>
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="name" className="text-right">
+                    Nome
+                  </Label>
+                  <Input
+                    id="name"
+                    placeholder="Ex: Corte Degradê"
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="description" className="text-right">
+                    Descrição
+                  </Label>
+                  <Textarea
+                    id="description"
+                    placeholder="Breve descrição do serviço"
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="duration" className="text-right">
+                    Duração (min)
+                  </Label>
+                  <Input
+                    id="duration"
+                    type="number"
+                    placeholder="Ex: 30"
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="price" className="text-right">
+                    Preço (R$)
+                  </Label>
+                  <Input
+                    id="price"
+                    type="number"
+                    placeholder="Ex: 45.00"
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="image" className="text-right">
+                    Imagem URL
+                  </Label>
+                  <Input
+                    id="image"
+                    placeholder="https://..."
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="popular" className="text-right">
+                    Popular
+                  </Label>
+                  <div className="flex items-center gap-2 col-span-3">
+                    <Switch id="popular" />
+                    <Label htmlFor="popular" className="text-sm text-muted-foreground">
+                      Marcar como serviço popular
+                    </Label>
+                  </div>
+                </div>
+              </div>
+              <DialogFooter>
+                <Button type="submit">Salvar</Button>
+              </DialogFooter>
+            </form>
+          </DialogContent>
+        </Dialog>
       </div>
       
       <ScrollArea className="h-[340px]">

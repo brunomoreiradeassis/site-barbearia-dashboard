@@ -1,16 +1,36 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { 
   Users, 
   Star, 
   Scissors, 
   Phone,
-  Calendar
+  Calendar,
+  Plus,
+  User
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Mock team members data
 const TEAM_MEMBERS = [
@@ -50,11 +70,120 @@ const TEAM_MEMBERS = [
 ];
 
 export function TeamMembers() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleAddTeamMember = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Here we would normally add the team member to the database
+    // For this demo, we'll just close the dialog
+    setIsDialogOpen(false);
+    // Show success feedback in a real app
+  };
+
   return (
     <Card className="overflow-hidden">
       <div className="flex justify-between items-center border-b p-4">
         <h3 className="font-semibold">Equipe</h3>
-        <Button size="sm">Gerenciar</Button>
+        <div className="flex gap-2">
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button size="sm">
+                <Plus className="h-4 w-4 mr-1" />
+                Adicionar
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Novo Membro da Equipe</DialogTitle>
+                <DialogDescription>
+                  Adicione um novo profissional à sua equipe.
+                </DialogDescription>
+              </DialogHeader>
+              <form onSubmit={handleAddTeamMember}>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="name" className="text-right">
+                      Nome
+                    </Label>
+                    <Input
+                      id="name"
+                      placeholder="Nome completo"
+                      className="col-span-3"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="role" className="text-right">
+                      Cargo
+                    </Label>
+                    <Select>
+                      <SelectTrigger className="col-span-3">
+                        <SelectValue placeholder="Selecione um cargo" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="barbeiro">Barbeiro</SelectItem>
+                        <SelectItem value="barbeiro-senior">Barbeiro Senior</SelectItem>
+                        <SelectItem value="barbeiro-master">Barbeiro Master</SelectItem>
+                        <SelectItem value="admin">Administrador</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="experience" className="text-right">
+                      Experiência
+                    </Label>
+                    <div className="col-span-3 flex items-center">
+                      <Input
+                        id="experience"
+                        type="number"
+                        placeholder="Anos de experiência"
+                        className="w-full"
+                      />
+                      <span className="ml-2">anos</span>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="specialty" className="text-right">
+                      Especialidades
+                    </Label>
+                    <Input
+                      id="specialty"
+                      placeholder="Ex: Degradê, Barba (separados por vírgula)"
+                      className="col-span-3"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="photo" className="text-right">
+                      Foto URL
+                    </Label>
+                    <Input
+                      id="photo"
+                      placeholder="https://..."
+                      className="col-span-3"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="availability" className="text-right">
+                      Disponibilidade
+                    </Label>
+                    <div className="col-span-3 flex items-center">
+                      <Input
+                        id="availability"
+                        type="number"
+                        placeholder="% de disponibilidade"
+                        className="w-full"
+                      />
+                      <span className="ml-2">%</span>
+                    </div>
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type="submit">Salvar</Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
+          <Button size="sm">Gerenciar</Button>
+        </div>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x">

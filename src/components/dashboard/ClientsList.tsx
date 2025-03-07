@@ -7,12 +7,24 @@ import {
   ChevronRight,
   CalendarCheck,
   Banknote,
-  Clock
+  Clock,
+  Plus,
+  User
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 // Mock clients data
@@ -76,6 +88,7 @@ const CLIENTS = [
 
 export function ClientsList() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   
   const filteredClients = CLIENTS.filter((client) =>
     client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -83,11 +96,92 @@ export function ClientsList() {
     client.phone.includes(searchTerm)
   );
 
+  const handleAddClient = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Here we would normally add the client to the database
+    // For this demo, we'll just close the dialog
+    setIsDialogOpen(false);
+    // Show success feedback in a real app
+  };
+
   return (
     <Card className="overflow-hidden">
       <div className="flex justify-between items-center border-b p-4">
         <h3 className="font-semibold">Clientes</h3>
-        <Button size="sm">Novo Cliente</Button>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button size="sm">
+              <Plus className="h-4 w-4 mr-1" />
+              Novo Cliente
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Novo Cliente</DialogTitle>
+              <DialogDescription>
+                Adicione um novo cliente à sua base.
+              </DialogDescription>
+            </DialogHeader>
+            <form onSubmit={handleAddClient}>
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="name" className="text-right">
+                    Nome
+                  </Label>
+                  <Input
+                    id="name"
+                    placeholder="Nome completo"
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="email" className="text-right">
+                    Email
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="email@exemplo.com"
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="phone" className="text-right">
+                    Telefone
+                  </Label>
+                  <Input
+                    id="phone"
+                    placeholder="(00) 00000-0000"
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="preferences" className="text-right">
+                    Preferências
+                  </Label>
+                  <Input
+                    id="preferences"
+                    placeholder="Ex: Degradê, Barba (separados por vírgula)"
+                    className="col-span-3"
+                  />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="notes" className="text-right">
+                    Observações
+                  </Label>
+                  <Input
+                    id="notes"
+                    placeholder="Observações especiais"
+                    className="col-span-3"
+                  />
+                </div>
+              </div>
+              <DialogFooter>
+                <Button type="submit">Salvar</Button>
+              </DialogFooter>
+            </form>
+          </DialogContent>
+        </Dialog>
       </div>
       
       <div className="p-4 border-b">
