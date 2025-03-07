@@ -8,7 +8,8 @@ import {
   Users,
   TrendingUp,
   MessageSquare,
-  Star
+  Star,
+  Gift
 } from "lucide-react";
 import { StatisticCard } from "@/components/dashboard/StatisticCard";
 import { AppointmentSchedule } from "@/components/dashboard/AppointmentSchedule";
@@ -16,6 +17,8 @@ import { ServicesList } from "@/components/dashboard/ServicesList";
 import { ClientsList } from "@/components/dashboard/ClientsList";
 import { TeamMembers } from "@/components/dashboard/TeamMembers";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { LoyaltyTracker } from "@/components/dashboard/LoyaltyTracker";
+import { NotificationSettings } from "@/components/dashboard/NotificationSettings";
 
 const Index = () => {
   return (
@@ -69,13 +72,17 @@ const Index = () => {
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <AppointmentSchedule />
-        <ServicesList />
+        <div className="grid grid-cols-1 gap-6">
+          <ServicesList />
+          <NotificationSettings />
+        </div>
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <ClientsList />
         <div className="grid grid-cols-1 gap-6">
           <TeamMembers />
+          <LoyaltyTracker />
           <div className="dashboard-grid">
             <StatisticCard
               title="Total de Clientes"

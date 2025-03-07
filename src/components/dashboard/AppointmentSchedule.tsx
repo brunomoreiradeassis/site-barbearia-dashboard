@@ -32,6 +32,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useToast } from "@/hooks/use-toast";
 
 // Define the AppointmentStatus type first
 type AppointmentStatus = "confirmed" | "pending" | "canceled";
@@ -121,6 +122,7 @@ export function AppointmentSchedule() {
   const [selected, setSelected] = useState<"today" | "tomorrow">("today");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [appointmentDate, setAppointmentDate] = useState<Date | undefined>(new Date());
+  const { toast } = useToast();
   
   const formatDate = (date: Date) => {
     return date.toLocaleDateString("pt-BR", {
@@ -140,9 +142,13 @@ export function AppointmentSchedule() {
   const handleAddAppointment = (e: React.FormEvent) => {
     e.preventDefault();
     // Here we would normally add the appointment to the database
-    // For this demo, we'll just close the dialog
     setIsDialogOpen(false);
-    // Show success feedback in a real app
+    
+    // Show success feedback
+    toast({
+      title: "Agendamento criado",
+      description: "O novo agendamento foi adicionado com sucesso.",
+    });
   };
 
   return (
@@ -182,7 +188,7 @@ export function AppointmentSchedule() {
                 Agendar
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] bg-background/95 backdrop-blur-sm border border-border/50">
               <DialogHeader>
                 <DialogTitle>Novo Agendamento</DialogTitle>
                 <DialogDescription>
@@ -197,10 +203,10 @@ export function AppointmentSchedule() {
                     </Label>
                     <div className="col-span-3">
                       <Select>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-background/80 backdrop-blur-sm">
                           <SelectValue placeholder="Selecione um cliente" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-background/95 backdrop-blur-sm border border-border/50">
                           <SelectItem value="henrique">Henrique Alves</SelectItem>
                           <SelectItem value="marcelo">Marcelo Santos</SelectItem>
                           <SelectItem value="bruno">Bruno Costa</SelectItem>
@@ -216,10 +222,10 @@ export function AppointmentSchedule() {
                     </Label>
                     <div className="col-span-3">
                       <Select>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-background/80 backdrop-blur-sm">
                           <SelectValue placeholder="Selecione um serviço" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-background/95 backdrop-blur-sm border border-border/50">
                           <SelectItem value="corte">Corte Degradê</SelectItem>
                           <SelectItem value="barba">Barba Completa</SelectItem>
                           <SelectItem value="combo">Corte + Barba</SelectItem>
@@ -239,7 +245,7 @@ export function AppointmentSchedule() {
                           <Button
                             variant={"outline"}
                             className={cn(
-                              "w-full justify-start text-left font-normal",
+                              "w-full justify-start text-left font-normal bg-background/80 backdrop-blur-sm",
                               !appointmentDate && "text-muted-foreground"
                             )}
                           >
@@ -253,7 +259,7 @@ export function AppointmentSchedule() {
                             )}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0">
+                        <PopoverContent className="w-auto p-0 bg-background/95 backdrop-blur-sm border border-border/50">
                           <Calendar
                             mode="single"
                             selected={appointmentDate}
@@ -271,10 +277,10 @@ export function AppointmentSchedule() {
                     </Label>
                     <div className="col-span-3">
                       <Select>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-background/80 backdrop-blur-sm">
                           <SelectValue placeholder="Selecione um horário" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-background/95 backdrop-blur-sm border border-border/50">
                           <SelectItem value="9:00">09:00</SelectItem>
                           <SelectItem value="9:30">09:30</SelectItem>
                           <SelectItem value="10:00">10:00</SelectItem>
@@ -297,13 +303,31 @@ export function AppointmentSchedule() {
                     </Label>
                     <div className="col-span-3">
                       <Select>
-                        <SelectTrigger>
+                        <SelectTrigger className="bg-background/80 backdrop-blur-sm">
                           <SelectValue placeholder="Selecione um profissional" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-background/95 backdrop-blur-sm border border-border/50">
                           <SelectItem value="andre">André Silva</SelectItem>
                           <SelectItem value="marcos">Marcos Souza</SelectItem>
                           <SelectItem value="rodrigo">Rodrigo Almeida</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  {/* New field to check if this is a free loyalty haircut */}
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="isLoyalty" className="text-right">
+                      Corte de Fidelidade
+                    </Label>
+                    <div className="col-span-3">
+                      <Select>
+                        <SelectTrigger className="bg-background/80 backdrop-blur-sm">
+                          <SelectValue placeholder="É um corte grátis?" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-background/95 backdrop-blur-sm border border-border/50">
+                          <SelectItem value="no">Não</SelectItem>
+                          <SelectItem value="yes">Sim - Resgate de Fidelidade</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>

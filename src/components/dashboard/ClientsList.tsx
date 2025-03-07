@@ -9,7 +9,8 @@ import {
   Banknote,
   Clock,
   Plus,
-  User
+  User,
+  Scissors
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,8 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
+import { Progress } from "@/components/ui/progress";
 
 // Mock clients data
 const CLIENTS = [
@@ -89,6 +92,7 @@ const CLIENTS = [
 export function ClientsList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { toast } = useToast();
   
   const filteredClients = CLIENTS.filter((client) =>
     client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -99,9 +103,13 @@ export function ClientsList() {
   const handleAddClient = (e: React.FormEvent) => {
     e.preventDefault();
     // Here we would normally add the client to the database
-    // For this demo, we'll just close the dialog
     setIsDialogOpen(false);
-    // Show success feedback in a real app
+    
+    // Show success feedback
+    toast({
+      title: "Cliente adicionado",
+      description: "O novo cliente foi cadastrado com sucesso.",
+    });
   };
 
   return (
@@ -115,7 +123,7 @@ export function ClientsList() {
               Novo Cliente
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent className="sm:max-w-[425px] bg-background/95 backdrop-blur-sm border border-border/50">
             <DialogHeader>
               <DialogTitle>Novo Cliente</DialogTitle>
               <DialogDescription>
@@ -131,7 +139,7 @@ export function ClientsList() {
                   <Input
                     id="name"
                     placeholder="Nome completo"
-                    className="col-span-3"
+                    className="col-span-3 bg-background/80 backdrop-blur-sm"
                   />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
@@ -142,7 +150,7 @@ export function ClientsList() {
                     id="email"
                     type="email"
                     placeholder="email@exemplo.com"
-                    className="col-span-3"
+                    className="col-span-3 bg-background/80 backdrop-blur-sm"
                   />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
@@ -152,7 +160,7 @@ export function ClientsList() {
                   <Input
                     id="phone"
                     placeholder="(00) 00000-0000"
-                    className="col-span-3"
+                    className="col-span-3 bg-background/80 backdrop-blur-sm"
                   />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
@@ -162,7 +170,7 @@ export function ClientsList() {
                   <Input
                     id="preferences"
                     placeholder="Ex: Degradê, Barba (separados por vírgula)"
-                    className="col-span-3"
+                    className="col-span-3 bg-background/80 backdrop-blur-sm"
                   />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
@@ -172,8 +180,23 @@ export function ClientsList() {
                   <Input
                     id="notes"
                     placeholder="Observações especiais"
-                    className="col-span-3"
+                    className="col-span-3 bg-background/80 backdrop-blur-sm"
                   />
+                </div>
+                
+                {/* New field for loyalty tracking */}
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label className="text-right flex items-center">
+                    <Scissors className="h-3 w-3 mr-1" />
+                    Fidelidade
+                  </Label>
+                  <div className="col-span-3 space-y-2">
+                    <div className="flex items-center justify-between text-xs">
+                      <span>0 de 5 cortes</span>
+                      <span>0%</span>
+                    </div>
+                    <Progress value={0} className="h-2" />
+                  </div>
                 </div>
               </div>
               <DialogFooter>
