@@ -20,6 +20,7 @@ import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { LoyaltyTracker } from "@/components/dashboard/LoyaltyTracker";
 import { NotificationSettings } from "@/components/dashboard/NotificationSettings";
 import { DashboardSettings } from "@/components/dashboard/DashboardSettings";
+import { NotificationsCard } from "@/components/dashboard/NotificationsCard";
 
 const Index = () => {
   return (
@@ -83,8 +84,8 @@ const Index = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <AppointmentSchedule />
         <div className="grid grid-cols-1 gap-6">
+          <NotificationsCard />
           <ServicesList />
-          <NotificationSettings />
         </div>
       </div>
       
