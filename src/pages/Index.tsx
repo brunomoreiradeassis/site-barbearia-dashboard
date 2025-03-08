@@ -19,7 +19,7 @@ import { TeamMembers } from "@/components/dashboard/TeamMembers";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { LoyaltyTracker } from "@/components/dashboard/LoyaltyTracker";
 import { NotificationSettings } from "@/components/dashboard/NotificationSettings";
-import { DashboardFilters } from "@/components/dashboard/DashboardFilters";
+import { DashboardSettings } from "@/components/dashboard/DashboardSettings";
 
 const Index = () => {
   return (
@@ -27,7 +27,7 @@ const Index = () => {
       <div className="pb-4 border-b">
         <div className="flex justify-between items-center p-2">
           <div className="space-y-2">
-            <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent drop-shadow-sm">
+            <h1 className="dashboard-title">
               Painel de Controle
             </h1>
             <p className="text-sm text-muted-foreground font-medium max-w-2xl">
@@ -35,7 +35,7 @@ const Index = () => {
             </p>
           </div>
           <div className="flex items-center space-x-2 pr-4">
-            <DashboardFilters />
+            <DashboardSettings />
             <ThemeToggle />
           </div>
         </div>
@@ -49,6 +49,7 @@ const Index = () => {
           icon={CalendarCheck}
           trend={{ value: 8, isPositive: true }}
           variant="primary"
+          filterType="agendamentos"
         />
         <StatisticCard
           title="Faturamento Diário"
@@ -57,6 +58,7 @@ const Index = () => {
           icon={CircleDollarSign}
           trend={{ value: 12, isPositive: true }}
           variant="success"
+          filterType="faturamento"
         />
         <StatisticCard
           title="Serviços Realizados"
@@ -65,6 +67,7 @@ const Index = () => {
           icon={Scissors}
           trend={{ value: 5, isPositive: false }}
           variant="info"
+          filterType="servicos"
         />
         <StatisticCard
           title="Novos Clientes"
@@ -73,6 +76,7 @@ const Index = () => {
           icon={UserCheck}
           trend={{ value: 15, isPositive: true }}
           variant="warning"
+          filterType="clientes"
         />
       </div>
       

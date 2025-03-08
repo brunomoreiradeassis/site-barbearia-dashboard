@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -42,6 +43,9 @@
     --sidebar-accent-foreground: 210 40% 98%;
     --sidebar-border: 215 28% 18%;
     --sidebar-ring: 142.1 76.2% 36.3%;
+    
+    --title-gradient-from: 219 50% 20%;
+    --title-gradient-to: 219 50% 30%;
   }
   
   .dark {
@@ -81,6 +85,9 @@
     --sidebar-accent-foreground: 210 40% 98%;
     --sidebar-border: 215 28% 25%;
     --sidebar-ring: 142.1 76.2% 36.3%;
+    
+    --title-gradient-from: 210 90% 80%;
+    --title-gradient-to: 200 80% 60%;
   }
 }
 
@@ -144,6 +151,10 @@
     to {
       opacity: 1;
     }
+  }
+  
+  .dashboard-title {
+    @apply text-4xl font-bold tracking-tight bg-gradient-to-r from-[hsl(var(--title-gradient-from))] to-[hsl(var(--title-gradient-to))] bg-clip-text text-transparent drop-shadow-sm;
   }
 }
 

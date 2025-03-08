@@ -1,8 +1,17 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { cva } from "class-variance-authority";
-import { LucideIcon } from "lucide-react";
+import { LucideIcon, ChevronDown, ChevronRight } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 const cardVariants = cva(
   "stat-card flex flex-col gap-2 relative overflow-hidden",
@@ -23,6 +32,48 @@ const cardVariants = cva(
   }
 );
 
+interface FilterOption {
+  label: string;
+  value: string;
+}
+
+type StatisticCardFilter = {
+  agendamentos?: FilterOption[];
+  faturamento?: FilterOption[];
+  servicos?: FilterOption[];
+  clientes?: FilterOption[];
+  [key: string]: FilterOption[] | undefined;
+};
+
+// Predefined filter options based on card type
+const filterOptions: StatisticCardFilter = {
+  agendamentos: [
+    { label: "Hoje", value: "hoje" },
+    { label: "Amanhã", value: "amanha" },
+    { label: "Esta semana", value: "semana" },
+    { label: "Este mês", value: "mes" },
+  ],
+  faturamento: [
+    { label: "Diário", value: "diario" },
+    { label: "Semanal", value: "semanal" },
+    { label: "Mensal", value: "mensal" },
+    { label: "Trimestral", value: "trimestral" },
+    { label: "Anual", value: "anual" },
+  ],
+  servicos: [
+    { label: "Hoje", value: "hoje" },
+    { label: "Esta semana", value: "semana" },
+    { label: "Este mês", value: "mes" },
+    { label: "Por tipo", value: "tipo" },
+  ],
+  clientes: [
+    { label: "Novos esta semana", value: "novos_semana" },
+    { label: "Novos este mês", value: "novos_mes" },
+    { label: "Mais frequentes", value: "frequentes" },
+    { label: "Com corte grátis", value: "corte_gratis" },
+  ],
+};
+
 interface StatisticCardProps {
   title: string;
   value: string | number;
@@ -34,6 +85,7 @@ interface StatisticCardProps {
   };
   variant?: "default" | "primary" | "success" | "warning" | "info" | "danger";
   className?: string;
+  filterType?: keyof StatisticCardFilter;
 }
 
 export function StatisticCard({
@@ -44,7 +96,19 @@ export function StatisticCard({
   trend,
   variant = "default",
   className,
+  filterType,
 }: StatisticCardProps) {
+  const { toast } = useToast();
+  const [currentFilter, setCurrentFilter] = useState<string | null>(null);
+  
+  const handleFilterSelect = (filterLabel: string) => {
+    setCurrentFilter(filterLabel);
+    toast({
+      title: "Filtro aplicado",
+      description: `${title}: ${filterLabel}`,
+    });
+  };
+
   return (
     <div className={cn(cardVariants({ variant }), className)}>
       <div className="absolute -right-3 -top-3 opacity-10">
@@ -52,8 +116,37 @@ export function StatisticCard({
       </div>
       <div className="flex items-start justify-between">
         <p className="text-sm font-medium text-muted-foreground">{title}</p>
-        <div className="rounded-full bg-background/50 p-1.5">
-          <Icon className="h-4 w-4" />
+        <div className="flex items-center space-x-1">
+          <div className="rounded-full bg-background/50 p-1.5">
+            <Icon className="h-4 w-4" />
+          </div>
+          
+          {filterType && filterOptions[filterType] && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-7 w-7">
+                  <ChevronDown className="h-3.5 w-3.5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                {filterOptions[filterType].map((option) => (
+                  <DropdownMenuItem 
+                    key={option.value}
+                    onClick={() => handleFilterSelect(option.label)}
+                  >
+                    {currentFilter === option.label && (
+                      <ChevronRight className="mr-1 h-3.5 w-3.5" />
+                    )}
+                    {option.label}
+                  </DropdownMenuItem>
+                ))}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setCurrentFilter(null)}>
+                  Limpar filtro
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
       <div className="flex items-baseline gap-1.5">
@@ -72,9 +165,15 @@ export function StatisticCard({
           </span>
         )}
       </div>
-      {description && (
-        <p className="text-xs text-muted-foreground">{description}</p>
-      )}
+      <div>
+        {currentFilter ? (
+          <p className="text-xs text-muted-foreground">
+            Filtro: <span className="font-medium">{currentFilter}</span>
+          </p>
+        ) : description ? (
+          <p className="text-xs text-muted-foreground">{description}</p>
+        ) : null}
+      </div>
     </div>
   );
 }
