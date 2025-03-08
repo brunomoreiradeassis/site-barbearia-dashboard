@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Bell, Clock, CheckCircle, AlertTriangle, Settings, MessageSquare, Phone, Mail } from "lucide-react";
+import { Bell, Clock, CheckCircle, AlertTriangle, Settings, MessageSquare, Phone, Mail, Gift, Star } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
