@@ -24,7 +24,7 @@ import { NotificationsCard } from "@/components/dashboard/NotificationsCard";
 
 const Index = () => {
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6 animate-fade-in container px-4 sm:px-6 lg:px-8 mx-auto">
       <div className="pb-4 border-b">
         <div className="flex justify-between items-center p-2">
           <div className="space-y-2">
