@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { 
   Users, 
@@ -102,10 +101,8 @@ export function ClientsList() {
 
   const handleAddClient = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here we would normally add the client to the database
     setIsDialogOpen(false);
     
-    // Show success feedback
     toast({
       title: "Cliente adicionado",
       description: "O novo cliente foi cadastrado com sucesso.",
@@ -184,7 +181,6 @@ export function ClientsList() {
                   />
                 </div>
                 
-                {/* New field for loyalty tracking */}
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label className="text-right flex items-center">
                     <Scissors className="h-3 w-3 mr-1" />
@@ -220,7 +216,7 @@ export function ClientsList() {
         </div>
       </div>
       
-      <ScrollArea className="h-[340px]">
+      <ScrollArea className="h-[240px]">
         {filteredClients.length > 0 ? (
           <div className="divide-y">
             {filteredClients.map((client) => (

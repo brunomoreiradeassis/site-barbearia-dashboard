@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Calendar as CalendarIcon, Clock, User, AlertCircle, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -351,7 +350,7 @@ export function AppointmentSchedule() {
         </div>
       </div>
       
-      <ScrollArea className="h-[340px]">
+      <ScrollArea className="h-[240px]">
         {filteredAppointments.length > 0 ? (
           <div className="divide-y">
             {filteredAppointments.map((appointment) => (
