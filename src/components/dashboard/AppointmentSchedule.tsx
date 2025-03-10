@@ -33,10 +33,8 @@ import {
 } from "@/components/ui/popover";
 import { useToast } from "@/hooks/use-toast";
 
-// Define the AppointmentStatus type first
 type AppointmentStatus = "confirmed" | "pending" | "canceled";
 
-// Mock appointments data
 const TODAY = new Date();
 const TOMORROW = new Date(TODAY);
 TOMORROW.setDate(TODAY.getDate() + 1);
@@ -131,7 +129,6 @@ export function AppointmentSchedule() {
     });
   };
   
-  // Filter appointments for the selected day
   const filteredAppointments = APPOINTMENTS.filter(
     (appointment) => 
       (selected === "today" && appointment.date === TODAY) ||
@@ -140,10 +137,8 @@ export function AppointmentSchedule() {
 
   const handleAddAppointment = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here we would normally add the appointment to the database
     setIsDialogOpen(false);
     
-    // Show success feedback
     toast({
       title: "Agendamento criado",
       description: "O novo agendamento foi adicionado com sucesso.",
@@ -215,6 +210,7 @@ export function AppointmentSchedule() {
                       </Select>
                     </div>
                   </div>
+                  
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="service" className="text-right">
                       Serviço
@@ -234,6 +230,7 @@ export function AppointmentSchedule() {
                       </Select>
                     </div>
                   </div>
+                  
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="date" className="text-right">
                       Data
@@ -270,6 +267,7 @@ export function AppointmentSchedule() {
                       </Popover>
                     </div>
                   </div>
+                  
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="time" className="text-right">
                       Horário
@@ -296,6 +294,7 @@ export function AppointmentSchedule() {
                       </Select>
                     </div>
                   </div>
+                  
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="professional" className="text-right">
                       Profissional
@@ -314,7 +313,6 @@ export function AppointmentSchedule() {
                     </div>
                   </div>
 
-                  {/* New field to check if this is a free loyalty haircut */}
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="isLoyalty" className="text-right">
                       Corte de Fidelidade
@@ -350,7 +348,7 @@ export function AppointmentSchedule() {
         </div>
       </div>
       
-      <ScrollArea className="h-[240px]">
+      <ScrollArea className="h-[296px]">
         {filteredAppointments.length > 0 ? (
           <div className="divide-y">
             {filteredAppointments.map((appointment) => (
