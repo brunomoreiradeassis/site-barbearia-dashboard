@@ -21,6 +21,7 @@ import { LoyaltyTracker } from "@/components/dashboard/LoyaltyTracker";
 import { NotificationSettings } from "@/components/dashboard/NotificationSettings";
 import { DashboardSettings } from "@/components/dashboard/DashboardSettings";
 import { NotificationsCard } from "@/components/dashboard/NotificationsCard";
+import { AnalyticsReport } from "@/components/dashboard/AnalyticsReport";
 
 const Index = () => {
   return (
@@ -80,6 +81,9 @@ const Index = () => {
           filterType="clientes"
         />
       </div>
+      
+      {/* Nova seção de Relatórios e Análises */}
+      <AnalyticsReport />
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <AppointmentSchedule />
