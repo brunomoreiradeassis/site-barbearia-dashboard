@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   Package, 
   AlertTriangle, 
@@ -8,7 +7,9 @@ import {
   Edit, 
   Trash2, 
   Search,
-  CircleAlert
+  CircleAlert,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,7 +21,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 
-// Tipos para os produtos no inventário
 interface Product {
   id: string;
   name: string;
@@ -33,7 +33,6 @@ interface Product {
   usageFrequency: number;
 }
 
-// Dados de exemplo para produtos
 const initialProducts: Product[] = [
   {
     id: "1",
@@ -92,7 +91,6 @@ const initialProducts: Product[] = [
   }
 ];
 
-// Categorias de produtos
 const productCategories = ["Cabelo", "Barba", "Styling", "Finalização", "Skincare", "Acessórios"];
 
 export const InventoryManagement = () => {
@@ -110,22 +108,43 @@ export const InventoryManagement = () => {
     category: "",
     description: ""
   });
+  const [activeAlertIndex, setActiveAlertIndex] = useState(0);
   
   const { toast } = useToast();
   
-  // Filtrar produtos com base no termo de pesquisa
   const filteredProducts = products.filter(product => 
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
     product.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
   
-  // Produtos com estoque baixo (abaixo do mínimo de alerta)
   const lowStockProducts = products.filter(product => product.quantity <= product.minimumAlert);
   
-  // Produtos mais usados (ordenados por frequência de uso)
   const mostUsedProducts = [...products].sort((a, b) => b.usageFrequency - a.usageFrequency).slice(0, 5);
   
-  // Adicionar novo produto
+  useEffect(() => {
+    if (lowStockProducts.length <= 1) return;
+    
+    const interval = setInterval(() => {
+      setActiveAlertIndex(prevIndex => 
+        prevIndex === lowStockProducts.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 3000);
+    
+    return () => clearInterval(interval);
+  }, [lowStockProducts.length]);
+  
+  const handlePrevAlert = () => {
+    setActiveAlertIndex(prevIndex => 
+      prevIndex === 0 ? lowStockProducts.length - 1 : prevIndex - 1
+    );
+  };
+  
+  const handleNextAlert = () => {
+    setActiveAlertIndex(prevIndex => 
+      prevIndex === lowStockProducts.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+  
   const handleAddProduct = () => {
     const id = Math.random().toString(36).substring(2, 9);
     const productToAdd = {
@@ -152,13 +171,11 @@ export const InventoryManagement = () => {
     });
   };
   
-  // Abrir diálogo de edição
   const handleOpenEditDialog = (product: Product) => {
     setCurrentProduct(product);
     setIsEditDialogOpen(true);
   };
   
-  // Atualizar produto
   const handleUpdateProduct = () => {
     if (!currentProduct) return;
     
@@ -174,7 +191,6 @@ export const InventoryManagement = () => {
     });
   };
   
-  // Remover produto
   const handleDeleteProduct = (id: string) => {
     const productToDelete = products.find(product => product.id === id);
     const updatedProducts = products.filter(product => product.id !== id);
@@ -187,7 +203,6 @@ export const InventoryManagement = () => {
     });
   };
   
-  // Atualizar campo do produto atual
   const handleCurrentProductChange = (field: keyof Product, value: any) => {
     if (!currentProduct) return;
     
@@ -197,7 +212,6 @@ export const InventoryManagement = () => {
     });
   };
   
-  // Atualizar campo do novo produto
   const handleNewProductChange = (field: keyof Omit<Product, "id" | "usageFrequency">, value: any) => {
     setNewProduct({
       ...newProduct,
@@ -343,17 +357,47 @@ export const InventoryManagement = () => {
           </div>
         </CardHeader>
         <CardContent>
-          {/* Alertas de Estoque Baixo */}
           {lowStockProducts.length > 0 && (
             <div className="mb-6 p-4 border rounded-lg bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800">
-              <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400 mb-2">
-                <AlertTriangle className="h-5 w-5" />
-                <h3 className="font-medium">Alertas de Estoque Baixo</h3>
+              <div className="flex items-center justify-between gap-2 text-amber-700 dark:text-amber-400 mb-2">
+                <h3 className="flex items-center font-medium">
+                  <AlertTriangle className="h-5 w-5 mr-2" />
+                  Alertas de Estoque Baixo ({activeAlertIndex + 1}/{lowStockProducts.length})
+                </h3>
+                {lowStockProducts.length > 1 && (
+                  <div className="flex items-center gap-1">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="h-7 w-7 text-amber-600 dark:text-amber-500 hover:bg-amber-100 dark:hover:bg-amber-900"
+                      onClick={handlePrevAlert}
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="h-7 w-7 text-amber-600 dark:text-amber-500 hover:bg-amber-100 dark:hover:bg-amber-900"
+                      onClick={handleNextAlert}
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-                {lowStockProducts.map(product => (
-                  <div key={product.id} className="flex items-center gap-2 text-sm">
-                    <CircleAlert className="h-4 w-4 text-amber-600 dark:text-amber-500" />
+                {lowStockProducts.map((product, index) => (
+                  <div 
+                    key={product.id} 
+                    className={`flex items-center gap-2 text-sm p-2 rounded-md transition-all duration-300 ${
+                      index === activeAlertIndex 
+                        ? "bg-amber-100 dark:bg-amber-900/30 scale-105 shadow-sm" 
+                        : "opacity-60"
+                    }`}
+                  >
+                    <CircleAlert className={`h-4 w-4 text-amber-600 dark:text-amber-500 ${
+                      index === activeAlertIndex ? "animate-pulse" : ""
+                    }`} />
                     <span>{product.name}</span>
                     <Badge variant="outline" className="ml-auto">
                       {product.quantity}/{product.minimumAlert}
@@ -364,7 +408,6 @@ export const InventoryManagement = () => {
             </div>
           )}
 
-          {/* Tabela de Produtos */}
           <div className="rounded-md border overflow-hidden">
             <Table>
               <TableHeader>
@@ -432,7 +475,6 @@ export const InventoryManagement = () => {
         </CardContent>
       </Card>
 
-      {/* Relatório de Consumo */}
       <Card>
         <CardHeader>
           <CardTitle className="text-xl font-medium">
@@ -481,7 +523,6 @@ export const InventoryManagement = () => {
         </CardContent>
       </Card>
 
-      {/* Dialog para editar produto */}
       {currentProduct && (
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
           <DialogContent className="sm:max-w-[500px]">
