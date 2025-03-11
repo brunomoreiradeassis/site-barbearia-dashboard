@@ -22,6 +22,7 @@ import { NotificationSettings } from "@/components/dashboard/NotificationSetting
 import { DashboardSettings } from "@/components/dashboard/DashboardSettings";
 import { NotificationsCard } from "@/components/dashboard/NotificationsCard";
 import { AnalyticsReport } from "@/components/dashboard/AnalyticsReport";
+import { PaymentManagement } from "@/components/dashboard/PaymentManagement";
 
 const Index = () => {
   return (
@@ -82,8 +83,11 @@ const Index = () => {
         />
       </div>
       
-      {/* Nova seção de Relatórios e Análises */}
+      {/* Relatórios e Análises */}
       <AnalyticsReport />
+      
+      {/* Nova seção de Gestão de Pagamentos */}
+      <PaymentManagement />
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <AppointmentSchedule />
