@@ -25,6 +25,7 @@ import { NotificationsCard } from "@/components/dashboard/NotificationsCard";
 import { AnalyticsReport } from "@/components/dashboard/AnalyticsReport";
 import { PaymentManagement } from "@/components/dashboard/PaymentManagement";
 import { InventoryManagement } from "@/components/dashboard/InventoryManagement";
+import { CustomerFeedback } from "@/components/dashboard/CustomerFeedback";
 
 const Index = () => {
   return (
@@ -93,6 +94,9 @@ const Index = () => {
       
       {/* Nova seção de Gestão de Inventário */}
       <InventoryManagement />
+      
+      {/* Nova seção de Avaliações e Feedback */}
+      <CustomerFeedback />
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <AppointmentSchedule />
