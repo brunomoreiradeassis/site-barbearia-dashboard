@@ -9,7 +9,8 @@ import {
   TrendingUp,
   MessageSquare,
   Star,
-  Gift
+  Gift,
+  Package
 } from "lucide-react";
 import { StatisticCard } from "@/components/dashboard/StatisticCard";
 import { AppointmentSchedule } from "@/components/dashboard/AppointmentSchedule";
@@ -23,6 +24,7 @@ import { DashboardSettings } from "@/components/dashboard/DashboardSettings";
 import { NotificationsCard } from "@/components/dashboard/NotificationsCard";
 import { AnalyticsReport } from "@/components/dashboard/AnalyticsReport";
 import { PaymentManagement } from "@/components/dashboard/PaymentManagement";
+import { InventoryManagement } from "@/components/dashboard/InventoryManagement";
 
 const Index = () => {
   return (
@@ -88,6 +90,9 @@ const Index = () => {
       
       {/* Nova seção de Gestão de Pagamentos */}
       <PaymentManagement />
+      
+      {/* Nova seção de Gestão de Inventário */}
+      <InventoryManagement />
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <AppointmentSchedule />
