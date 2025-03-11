@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell, LineChart, Line, ResponsiveContainer } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -130,6 +129,7 @@ export function AnalyticsReport() {
             )}
           </div>
           
+          
           <TabsContent value="charts" className="space-y-4">
             <div className="bg-card rounded-md p-4 h-[350px]">
               {chartType === "revenue" && (
@@ -252,6 +252,7 @@ export function AnalyticsReport() {
             </div>
           </TabsContent>
           
+          
           <TabsContent value="professionals" className="space-y-4">
             <div className="rounded-md overflow-hidden border">
               <table className="w-full text-sm">
@@ -301,6 +302,7 @@ export function AnalyticsReport() {
             </div>
           </TabsContent>
           
+          
           <TabsContent value="predictions" className="space-y-4">
             <div className="bg-card rounded-md p-6">
               <h3 className="text-lg font-semibold mb-4">Previsão de Faturamento</h3>
@@ -323,18 +325,39 @@ export function AnalyticsReport() {
                       labelFormatter={(label) => `Mês: ${label}`}
                     />
                     <Legend />
+                    {/* Fix: Replace the function with two separate Line components */}
                     <Line
                       type="monotone"
                       dataKey="value"
-                      name="Faturamento"
+                      name="Faturamento Atual"
                       stroke="#8884d8"
                       strokeWidth={2}
                       activeDot={{ r: 8 }}
-                      strokeDasharray={(data) => data.dotted ? "5 5" : "0"}
+                      connectNulls
+                      dot={(props) => {
+                        const { payload } = props;
+                        if (payload.dotted) {
+                          return <circle {...props} r={6} fill="#8884d8" />;
+                        }
+                        return <circle {...props} r={4} fill="#8884d8" />;
+                      }}
+                    />
+                    {/* Add a separate dashed line for predicted values */}
+                    <Line
+                      type="monotone"
+                      dataKey={(data) => data.dotted ? data.value : null}
+                      name="Faturamento Previsto"
+                      stroke="#8884d8"
+                      strokeWidth={2}
+                      strokeDasharray="5 5"
+                      dot={{ r: 6 }}
+                      activeDot={{ r: 8 }}
+                      connectNulls
                     />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
+              
               
               <div className="grid grid-cols-3 gap-4 mt-6">
                 <Card className="shadow-sm border-primary/20">
