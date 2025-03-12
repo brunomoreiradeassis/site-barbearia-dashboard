@@ -1,3 +1,4 @@
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
@@ -105,6 +106,68 @@ const TableCaption = React.forwardRef<
 ))
 TableCaption.displayName = "TableCaption"
 
+// Responsive table components
+const ResponsiveTable = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "w-full rounded-md border overflow-hidden",
+      className
+    )}
+    {...props}
+  />
+))
+ResponsiveTable.displayName = "ResponsiveTable"
+
+const ResponsiveTableContainer = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & { compact?: boolean }
+>(({ className, compact, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "w-full overflow-auto",
+      compact ? "max-h-[50vh]" : "",
+      className
+    )}
+    {...props}
+  />
+))
+ResponsiveTableContainer.displayName = "ResponsiveTableContainer"
+
+const CardTable = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
+      className
+    )}
+    {...props}
+  />
+))
+CardTable.displayName = "CardTable"
+
+const CardTableItem = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "rounded-lg border bg-card p-4 shadow-sm transition-all duration-200 hover:shadow",
+      className
+    )}
+    {...props}
+  />
+))
+CardTableItem.displayName = "CardTableItem"
+
 export {
   Table,
   TableHeader,
@@ -114,4 +177,8 @@ export {
   TableRow,
   TableCell,
   TableCaption,
+  ResponsiveTable,
+  ResponsiveTableContainer,
+  CardTable,
+  CardTableItem,
 }

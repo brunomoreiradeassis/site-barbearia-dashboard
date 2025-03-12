@@ -156,6 +156,44 @@
   .dashboard-title {
     @apply text-4xl font-bold tracking-tight bg-gradient-to-r from-[hsl(var(--title-gradient-from))] to-[hsl(var(--title-gradient-to))] bg-clip-text text-transparent drop-shadow-sm;
   }
+  
+  /* Mobile-responsive utilities */
+  .mobile-only {
+    @apply block sm:hidden;
+  }
+  
+  .desktop-only {
+    @apply hidden sm:block;
+  }
+  
+  .card-view-item {
+    @apply flex flex-col p-3 border rounded-md mb-3 bg-card;
+  }
+  
+  .card-view-label {
+    @apply text-xs font-medium text-muted-foreground mb-1;
+  }
+  
+  .card-view-value {
+    @apply font-medium;
+  }
+  
+  /* Responsive table utilities */
+  .responsive-table {
+    @apply w-full;
+  }
+  
+  .responsive-card-view {
+    @apply block sm:hidden space-y-4;
+  }
+  
+  .responsive-table-view {
+    @apply hidden sm:block;
+  }
+  
+  .table-container {
+    @apply rounded-md border overflow-hidden;
+  }
 }
 
 /* App-specific custom classes */
@@ -181,4 +219,39 @@
 
 .transition-theme {
   @apply transition-colors duration-300;
+}
+
+/* Table component variations */
+.table-compact {
+  @apply text-xs;
+}
+
+.table-compact th,
+.table-compact td {
+  @apply py-2 px-3;
+}
+
+.card-table {
+  @apply grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+}
+
+.card-table-item {
+  @apply border rounded-lg p-4 bg-card transition-all duration-200 hover:shadow-md;
+}
+
+/* Mobile card view for tables */
+.mobile-card-item {
+  @apply border rounded-md p-3 mb-2 bg-card;
+}
+
+.mobile-card-row {
+  @apply flex justify-between items-center py-1;
+}
+
+.mobile-card-label {
+  @apply text-xs font-medium text-muted-foreground;
+}
+
+.mobile-card-value {
+  @apply font-medium;
 }
