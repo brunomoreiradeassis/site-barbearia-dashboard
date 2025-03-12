@@ -168,6 +168,79 @@ const CardTableItem = React.forwardRef<
 ))
 CardTableItem.displayName = "CardTableItem"
 
+// Section-specific tables
+const DashboardTable = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <ResponsiveTable
+    ref={ref}
+    className={cn("dashboard-table", className)}
+    {...props}
+  />
+))
+DashboardTable.displayName = "DashboardTable"
+
+const PaymentsTable = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <ResponsiveTable
+    ref={ref}
+    className={cn("payments-table", className)}
+    {...props}
+  />
+))
+PaymentsTable.displayName = "PaymentsTable"
+
+const InventoryTable = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <ResponsiveTable
+    ref={ref}
+    className={cn("inventory-table", className)}
+    {...props}
+  />
+))
+InventoryTable.displayName = "InventoryTable"
+
+const FeedbackTable = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <ResponsiveTable
+    ref={ref}
+    className={cn("feedback-table", className)}
+    {...props}
+  />
+))
+FeedbackTable.displayName = "FeedbackTable"
+
+const AppointmentsTable = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <ResponsiveTable
+    ref={ref}
+    className={cn("appointments-table", className)}
+    {...props}
+  />
+))
+AppointmentsTable.displayName = "AppointmentsTable"
+
+const TeamTable = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <ResponsiveTable
+    ref={ref}
+    className={cn("team-table", className)}
+    {...props}
+  />
+))
+TeamTable.displayName = "TeamTable"
+
 export {
   Table,
   TableHeader,
@@ -181,4 +254,10 @@ export {
   ResponsiveTableContainer,
   CardTable,
   CardTableItem,
+  DashboardTable,
+  PaymentsTable,
+  InventoryTable,
+  FeedbackTable,
+  AppointmentsTable,
+  TeamTable
 }
